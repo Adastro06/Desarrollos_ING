@@ -1,16 +1,13 @@
-# helpers.py
+import pandas as pd
 
-def format_results(config):
+def load_materials(file_path):
     """
-    Formatea los resultados para que se muestren de manera legible.
+    Carga los materiales desde un archivo CSV.
+    Devuelve una lista de diccionarios con las propiedades de cada material.
     """
-    if not config:
-        return "No se encontró una configuración válida."
-    
-    return (
-        f"Diámetro del pistón: {config['diametro_piston']} mm\n"
-        f"Diámetro de la barra: {config['diametro_barra']} mm\n"
-        f"Fuerza máxima generada: {config['fuerza_maxima']:.2f} kN\n"
-        f"Esfuerzo máximo: {config['esfuerzo_maximo']:.2f} MPa\n"
-        f"Volumen total del material: {config['volumen_total']:.6f} m³"
-    )
+    try:
+        materials_df = pd.read_csv(file_path)
+        materials = materials_df.to_dict(orient="records")
+        return materials
+    except Exception as e:
+        raise Exception(f"Error al cargar el archivo CSV: {str(e)}")
